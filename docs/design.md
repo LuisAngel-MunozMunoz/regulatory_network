@@ -15,3 +15,42 @@
 - Recorrer toda la lista de los reguladores
   - Contar los genes de la lista de genes regulados por el TF
   - imprime regulador, conteo, lista de genes
+
+
+# Extension
+
+
+
+  1. Para cada TF
+
+  2. iniciar contador de activados en 0
+
+  3. iniciar contador de reprimidos en 0
+
+  4. recorrer todas las interacciones
+
+     - si la interacción pertenece a ese TF
+
+        - si effect es +
+
+          - aumentar activados
+
+        - si effect es -
+
+          - aumentar reprimidos
+
+  5. decidir el tipo
+
+      - si activados > 0 y reprimidos > 0
+
+        - tipo = dual
+
+      - si activados > 0 y reprimidos = 0
+
+        - tipo = activador
+
+      - si reprimidos > 0 y activados = 0
+
+        - tipo = represor
+
+  6. imprimir resultados

@@ -26,7 +26,7 @@ Generar una tabla que indique para cada TF:
 - lista de genes regulados (ordenada).
 
 
-## Extension del problema 
+# Extension del problema 
 
 Además de la tabla anterior, queremos saber si cada TF es:
 

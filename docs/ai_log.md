@@ -14,3 +14,9 @@
             separador.join(lista_de_strings)
             separador → texto que se colocará entre cada elemento
             lista_de_strings → lista de textos que se quieren unir
+
+
+## Pregunta 3
+
+    - ¿Como se cambia un tipo de dato?
+        Respuesta: str()
