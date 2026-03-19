@@ -1,4 +1,6 @@
-### Logica
+
+# Algoritmo
+
 - Lista / estructura de reguladores (sin repeticiones)
 - Lista de genes del regulador (sin repeticiones)*
 - Recorrer todas las interacciones(linea)
