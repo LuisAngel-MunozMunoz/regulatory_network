@@ -20,3 +20,15 @@
 
     - ¿Como se cambia un tipo de dato?
         Respuesta: str()
+
+# Version 1.1
+
+## Pregunta 1
+
+    - ¿Como puedo meter una variable a un out.write
+    Sugerencia: out.write(f"{TF}\t{total}\t{contA}\t{contR}\t{T_regul}\n")
+    Implementacion: out.write(f"{TF}\t{total}\t{contA}\t{contR}\t{T_regul}\t{lista_genes}\n")
+    Que aprendi: Que no puedo meter una variable solamente, debo meter o concatenar mas de una variable con \t
+
+
+## Pregunta

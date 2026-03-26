@@ -35,3 +35,11 @@ Además de la tabla anterior, queremos saber si cada TF es:
     represor
     dual
 ```
+
+
+
+## Actualizacion 1.1
+
+1. Leer los datos de un archivo
+    1. El archivo trae 7 columnas y las que vamos a usar son: TF, gene y effect
+2. Los resultados deberan mandarse a un archivo de salida

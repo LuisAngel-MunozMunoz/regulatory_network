@@ -54,3 +54,16 @@
         - tipo = represor
 
   6. imprimir resultados
+
+
+
+# Actualizacion 1.1 
+
+
+- Leer archivo
+  - recorrer líneas
+  - limpiar datos
+  - validar
+  - extraer información
+  - construir interactions
+- generar salida
