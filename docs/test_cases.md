@@ -201,3 +201,16 @@ Salida:
 
   - esa fila no se incluye en interactions 
   - el programa continúa con el resto del archivo
+
+
+  6. Archivo de entrada inexistente
+
+  - Condicion
+    - El archivo de entrada para el codigo no se encuentra para su uso y el codigo sabe que hacer
+
+  - Que se prueba:
+    - Que el codigo sepa que hacer en dado caso que el archivo este inexistente
+
+  - Comportamiento esperado:
+    - El programa detecta el error al abrir el archivo.
+    - Se genera un mensaje de error claro.

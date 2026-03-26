@@ -20,5 +20,5 @@ TSV (tab-separated values)
 ## Observaciones
 - el archivo tiene encabezado
 - puede tiene columnas adicionales
-- solo se usarán tres columnas en este proyecto
+- solo se usarán tres columnas en este proyecto (1,4 y 5)
 - La columna de efecto puede tener los siguiente valores: +, -, 

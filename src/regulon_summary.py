@@ -10,6 +10,10 @@ interactions = []
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 filename = os.path.join(BASE_DIR, "..", "data", "raw", "NetworkRegulatorGene.tsv")
 
+if not os.path.exists(filename):
+    print("El archivo no existe")
+    exit (1)
+
 
 with open(filename) as f:
     for line in f:
