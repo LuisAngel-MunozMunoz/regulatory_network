@@ -214,3 +214,19 @@ Salida:
   - Comportamiento esperado:
     - El programa detecta el error al abrir el archivo.
     - Se genera un mensaje de error claro.
+
+
+
+## Command Line INterface (CLI)
+
+Caso : Correr el programa con paso de argumentos
+
+Entrada: 
+
+```bash
+uv run python regulon_summary.py input.txt output.txt
+uv run ptython regulon_summary.py NetworkRegulatorGene.tsv tf_summary.txt
+```
+
+Resultado:
+El programa lea el archivio de entrada y genere el resulrado con el nombre que se le paso como argumento

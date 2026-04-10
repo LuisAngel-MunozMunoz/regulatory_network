@@ -43,3 +43,12 @@ Además de la tabla anterior, queremos saber si cada TF es:
 1. Leer los datos de un archivo
     1. El archivo trae 7 columnas y las que vamos a usar son: TF, gene y effect
 2. Los resultados deberan mandarse a un archivo de salida
+
+
+
+## Actualizacion 1.2
+
+Problema: El programa depende de rutas fijas (hardcoded)
+
+Nuevo requisio:
+    El programa debe recibir 2 argumentos, el archivo de entrada y el archivo de salida

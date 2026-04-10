@@ -67,3 +67,12 @@
   - extraer información
   - construir interactions
 - generar salida
+
+
+# Actualizacion v1.2
+
+El programa recibira 2 argumentos desde la linea de comandos
+
+Flujo: 
+
+usuario -->  CLI ---> main() ---> funciones
