@@ -173,13 +173,13 @@ Salida:
 - Condición
   - El archivo contiene una o más líneas vacías.
 
-- Qué se prueba
+  - Qué se prueba
 
-  - limpieza de entrada 
+    - limpieza de entrada 
   
-  - manejo de líneas sin contenido
+    - manejo de líneas sin contenido
 
-- Comportamiento esperado
+  - Comportamiento esperado
 
   - las líneas vacías se ignoran 
   
@@ -221,7 +221,7 @@ Salida:
 
 Caso : Correr el programa con paso de argumentos
 
-Entrada: 
+Entrada:
 
 ```bash
 uv run python regulon_summary.py input.txt output.txt

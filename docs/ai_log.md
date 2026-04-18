@@ -93,8 +93,66 @@
                 print("El archivo not existe)
                 ```
     - Que aprendi: Que se puede usar el os.path se puede usar como argumento ademas de que no debo de identar 
-                   todo, solo debo negar lo que quiero
+                   todo, solo debo negar lo que quiero.
 
 ## Pregunta 4
 
+# Version 1.2
 
+## Uso del todo numero 1: 
+    # TODO: validar que el archivo de entrada existe
+    - Me dio: 
+        ```
+        def validate_input_file(filename):
+        """
+        Valida que el archivo de entrada existe y tiene permisos de lectura.
+        
+        Args:
+            filename (str): Ruta del archivo a validar
+        
+        Returns:
+            bool: True si el archivo es válido
+        """
+        if not os.path.exists(filename):
+            print(f"El archivo no existe: {filename}")
+            exit(1)
+        elif not os.access(filename, os.R_OK):
+            print(f"No se tienen permisos de lectura para: {filename}")
+            exit(1)
+
+        return True
+        ```
+    - Implementacion: 
+        Implemente eso y compare en la funcion de main con que si el valor es falso, el archivo existe y es valido
+
+## Uso del TODO numero 2:
+    # TODO: mover argparse a una función parse_arguments
+
+    - Me dio:
+        def parse_arguments():
+        """
+        Introduce el paso de argumentos usando argparse.
+        
+        args:
+        Valor que tomara los argumentos de la linea de comandos
+        Returns:
+            argparse.Namespace: Objeto con los argumentos parseados
+        """
+        parser = argparse.ArgumentParser(
+            description="Lee un archivo TSV de interacciones TF-gene y genera un resumen de regulones.")
+
+        parser.add_argument(
+            "input_file", help="Archivo TSV de entrada con las interacciones TF-gene")
+        parser.add_argument(
+            "output_file", help="Archivo TSV de salida con el resumen de regulones")
+        parser.add_argument(
+            "--min_genes", type=int, default=1, help="Número mínimo de genes para incluir un TF")
+        args = parser.parse_args() 
+        if not os.path.isfile(args.input_file):
+            parser.error(f"El archivo de entrada '{args.input_file}' no existe o no es un archivo válido.")
+        return args
+    -Implemente:
+        - Cambie a eso, excepto que cuando lo intente no salio ningun aviso, entonces tuve que pasarlo a un if en la fucion main
+        -if not os.path.exists(args.input_file):
+            print(f"Error: El archivo de entrada '{args.input_file}' no existe.")
+            exit(1)

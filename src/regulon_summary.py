@@ -1,91 +1,75 @@
-#
-#
-import os, sys
+"""
+Análisis de regulones de genes.
 
-## Representacion de datos
+Este módulo carga interacciones entre factores de transcripción (TF) y genes,
+construye regulones agrupados por TF, y genera un resumen con estadísticas.
+"""
 
-#=================================================================================================
-#Lectura del archivo y construccion de interactions
-#========================================================================
+import os, argparse
 
 
-#  ==================================
-# Responsabilidad: leer el archivo de interacciones y construir una estructura de datos que contenga
-#                  la informacion relevante para cada TF
-# Entrada: archivo TSV con interacciones entre reguladores y genes
-# Salida: Lista de interacciones (TF, gene, effect)
-#  ==================================
+# ============================================================================
+# CARGA DE DATOS
+# ============================================================================
 
 def load_interactions(filename):
     """
-    Carga las interacciones desde un archivo TSV
-        
+    Carga las interacciones desde un archivo TSV.
+    
     Args:
-        filename (str): Ruta del archivo 
-
+        filename (str): Ruta del archivo TSV
+    
     Returns:
-        interactions (list): Lista de tuplas (TF, gene, effect)
-
+        list: Lista de tuplas (TF, gene, effect)
     """
-    interactions = []
+    try:
+        interactions = []
 
-    if not os.path.exists(filename):
-        print("El archivo no existe")
-        exit (1)
+        if not os.path.exists(filename):
+            print("El archivo no existe")
+            exit(1)
 
-    with open(filename) as f:
-        for line in f:
-            line = line.strip()
-            
-            # Ignorar lineas vacias 
-            if not line:
-                continue
+        with open(filename) as f:
+            for line in f:
+                line = line.strip()
+                
+                if not line or line.startswith("#") or line.startswith("1)regulatorId"):
+                    continue
 
-            # Ignorar comentarios
-            if line.startswith("#"):
-                continue
+                fields = line.split("\t")
+                if len(fields) <= 5:
+                    continue
 
-            # Ignorar encabezado 
-            if line.startswith("1)regulatorId"):
-                continue
+                TF = fields[1]
+                gene = fields[4]
+                effect = fields[5]
 
-            fields = line.split("\t")
+                if effect not in ["+", "-"]:
+                    continue
 
-            # Validar numero minimo de columnas
-            if len(fields) <= 5:
-                continue
+                interactions.append((TF, gene, effect))
+    
 
-            TF = fields[1]
-            gene = fields[4]
-            effect = fields[5]
-
-            # Validar efecto
-            if effect not in ["+", "-"]:
-                continue
-
-            interactions.append ((TF, gene, effect))
+    except PermissionError:
+        print("No se tienen permisos para leer el archivo")
+        exit(1)
 
     return interactions
 
 
-#  ==================================
-# Construccion del regulon con informacion extra
-#  ==================================
+# ============================================================================
+# PROCESAMIENTO DE DATOS
+# ============================================================================
 
-# ===================================
-# Responsabilidad: generar el diccionario con las llaves y datos de cada TF con su gene y efecto
-# Entrada: la lista de tuplas de las interacciones
-# Salida: un diccionario con los capos solicitados
-# ===================================
 def build_regulon(interactions):
     """
-    Construye un regulon agrupando genes por factor de transcripción
+    Construye un regulon agrupando genes por factor de transcripción.
     
     Args:
         interactions (list): Lista de tuplas (TF, gene, effect)
     
     Returns:
-        regulon (dict): Diccionario con estructura {TF: {gene: effect, ...}, ...}
+        dict: Diccionario con estructura {TF: {gene: effect, ...}, ...}
     """
     regulon = {}
 
@@ -97,20 +81,13 @@ def build_regulon(interactions):
     return regulon
 
 
-# =================================================================
-# Generacion de la salida
-# =================================================================
+# ============================================================================
+# SALIDA DE DATOS
+# ============================================================================
 
-
-
-#  ==================================
-# Responsabilidad: Hacer la tabla en un archivo de salida que tenga los datos de cada TF con su gene, efecto, total etc
-# Entrada: El diccionario de diccionario
-# Salida: Un archivo con todo lo solicitado
-#  ==================================
 def write_regulon_summary(regulon, output_file):
     """
-    Genera un archivo de resumen del regulon con estadísticas
+    Genera un archivo de resumen del regulon con estadísticas.
     
     Args:
         regulon (dict): Diccionario del regulon
@@ -123,44 +100,65 @@ def write_regulon_summary(regulon, output_file):
             genes = sorted(regulon[TF])
             total = len(genes)
             lista_genes = ", ".join(genes)
-            contA = 0
-            contR = 0
             
-            for gene in regulon[TF]:
-                efecto = regulon[TF][gene]
-                if efecto == "+":
-                    contA += 1
-                else:
-                    contR += 1
+            contA = sum(1 for gene in regulon[TF] if regulon[TF][gene] == "+")
+            contR = sum(1 for gene in regulon[TF] if regulon[TF][gene] == "-")
             
             if contA == 0:
-                T_regul = "represor"
+                tipo_regulon = "represor"
             elif contR == 0:
-                T_regul = "activador"
+                tipo_regulon = "activador"
             else:
-                T_regul = "dual"
+                tipo_regulon = "dual"
             
-            out.write(f"{TF}\t{total}\t{contA}\t{contR}\t{T_regul}\t{lista_genes}\n")
+            out.write(f"{TF}\t{total}\t{contA}\t{contR}\t{tipo_regulon}\t{lista_genes}\n")
 
+
+# ============================================================================
+# VALIDACIÓN DE ENTRADA
+# ============================================================================
+
+def parse_arguments():
+    """
+    Introduce el paso de argumentos usando argparse.
+    
+    args:
+       Valor que tomara los argumentos de la linea de comandos
+    Returns:
+        argparse.Namespace: Objeto con los argumentos parseados
+    """
+    parser = argparse.ArgumentParser(
+        description="Lee un archivo TSV de interacciones TF-gene y genera un resumen de regulones.")
+
+    parser.add_argument(
+        "input_file", help="Archivo TSV de entrada con las interacciones TF-gene")
+    parser.add_argument(
+        "output_file", help="Archivo TSV de salida con el resumen de regulones")
+    parser.add_argument(
+        "--min_genes", type=int, default=1, help="Número mínimo de genes para incluir un TF")
+    args = parser.parse_args() 
+
+    return args
+# ============================================================================
+# FUNCIÓN PRINCIPAL
+# ============================================================================
 
 def main():
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    """Orquesta el flujo principal del programa."""
+    args = parse_arguments()
     
-    filename = os.path.join(BASE_DIR, "..", "data", "raw", "NetworkRegulatorGene.tsv")
-
-    # Cargar interacciones
-    interactions = load_interactions(filename)
-    
-    # Construir regulon
+    #Validacion si existen los archivos de entrada y salida
+    if not os.path.exists(args.input_file):
+        print(f"Error: El archivo de entrada {args.input_file} no existe.")
+        exit(1)
+    if not os.path.exists(os.path.dirname(args.output_file)):
+        os.makedirs(os.path.dirname(args.output_file), exist_ok=True)
+        
+    interactions = load_interactions(args.input_file)
     regulon = build_regulon(interactions)
-    
-    # Definir archivo de salida
-    output_file = os.path.join(BASE_DIR, "..", "results", "regulon_summary_output.txt")
-    
-    # Escribir resumen
-    write_regulon_summary(regulon, output_file)
-    
-    print(f"Resumen del regulon guardado en: {output_file}")
+    write_regulon_summary(regulon, args.output_file)
+        
+    print(f"Resumen del regulon guardado en: {args.output_file}")
 
 
 if __name__ == "__main__":
