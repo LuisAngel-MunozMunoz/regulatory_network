@@ -1,0 +1,2 @@
+printf "\xff\xfe\xfa" > archivo_malo.tsv
+é

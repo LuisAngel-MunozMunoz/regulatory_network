@@ -230,3 +230,30 @@ uv run ptython regulon_summary.py NetworkRegulatorGene.tsv tf_summary.txt
 
 Resultado:
 El programa lea el archivio de entrada y genere el resulrado con el nombre que se le paso como argumento
+
+
+
+## Casos prueba en terminos de try y except
+
+  1. Error: Archivo no existe
+    + Si el archivo de entrada no existe:
+      Entrada: uv run python src/regulon_summary.py data/raw/NetworkRegulatorGene.txt results/tabla_regulones.txt --min_genes 4
+      Salida: Error: Archivo de entrada no existe: data/raw/NetworkRegulatorGene.txt
+  2. Error: Archivo vacío
+    + Si el archivo de entrada esta vacio
+      Entrada: uv run python src/regulon_summary.py data/archivo_vacio results/tabla_regulones.txt --min_genes 4
+      Salida: Error: Archivo vacío --> data/archivo_vacio
+  3. Error: No hay permisos para leer {filename}
+    + No se tiene permiso para leer el archivo
+      Entrada: uv run python src/regulon_summary.py data/bloqueado.tsv results/tabla_regulones.txt --min_genes 4
+      Salida: Error: No hay permisos para leer data/bloqueado.tsv
+  4. UnicodeDecodeError (Error: Archivo {filename} no es UTF-8 válido)
+    + Esta en otro formato de codificacion
+    + No logre crear un archivo con otro formato
+  5. OSError(Error I/O al escribir {output_file}: {e})
+    + Cuando en la carpeta donde se escribiran los resultados no tenemos permisos
+    Entrada: uv run python src/regulon_summary.py data/raw/NetworkRegulatorGene.tsv results/tabla_regulones.txt --min_genes 4
+    Salida: Error: No hay permisos para escribir results/tabla_regulones.txt
+    
+
+
